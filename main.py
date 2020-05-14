@@ -9,7 +9,7 @@ class Client:
         self.numdate = line[6]
         self.max_sum = line[7]
     def __str__(self):
-        return self.surname
+        return self.name
     def __repr__(self):
         return self.__str__()
 
@@ -20,4 +20,10 @@ with open('booking.txt', 'r', encoding='utf-8') as booking:
     for line in booking.readlines():
         client = line.split()
         clients.append(Client(client))
-print(degree_of_comfort['апартамент'])
+print(clients)
+
+'''
+Kirill - vvod
+Vova,Nikita - proverka
+Sveta - print, PEP8
+'''
