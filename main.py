@@ -1,5 +1,5 @@
 import datetime
-
+import random
 
 class Client:
     def __init__(self, line):
@@ -73,8 +73,14 @@ for guest in clients:
             pass
         if p_room.number_of_persons == guest.num_per:
             filtered.append(p_room)
+'''Randomizator
 
-
+if r.random() >= 0.25:
+    print('Согласен')
+else:
+    ('Отказ')
+    
+'''
 '''
 prices = []
 for max_pay in clients:
