@@ -1,3 +1,6 @@
+import datetime
+
+
 class Client:
     def __init__(self, line):
         self.book_date = line[0]
@@ -5,16 +8,22 @@ class Client:
         self.name = line[2]
         self.patr = line[3]
         self.num_per = line[4]
-        self.arrival = line[5]
-        self.num_days = line[6]
+        self.num_days = datetime.timedelta(days=int(line[6]))
         self.max_price = line[7]
+
+        arrival = line[5].split('.')[::-1]
+        for dt in range(len(arrival)):
+            arrival[dt] = int(arrival[dt])
+        arrival = datetime.datetime(arrival[0], arrival[1], arrival[2])
+
+        self.arrival = arrival
+
 
     def __str__(self):
         return self.name  # вместо name можно ставить, что нужно
 
     def __repr__(self):
         return self.__str__()
-
 
 class Room:
 
@@ -58,13 +67,15 @@ with open('fund.txt', 'r', encoding='utf-8') as fund:
 # начало алгоритма подбора
 filtered = []
 for guest in clients:
-    for room1 in rooms:
-        room1.occupied = guest.arrival
-        print(room1.occupied)
-        break
-        if room1.number_of_persons == guest.num_per:
-            filtered.append(room1)
+    for p_room in rooms:
+        #p_room.occupied = guest.arrival + guest.num_days
+        if p_room.occupied is None:
+            pass
+        if p_room.number_of_persons == guest.num_per:
+            filtered.append(p_room)
 
+
+'''
 prices = []
 for max_pay in clients:
     for price_ in rooms:
@@ -73,8 +84,9 @@ for max_pay in clients:
 
 
 
-'''
+
 Kirill - vvod
 Vova, Nikita - proverka
 Sveta - print, PEP8
 '''
+
