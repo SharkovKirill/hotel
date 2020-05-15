@@ -27,20 +27,7 @@ class Room:
         self.number_of_persons = line[2]
         self.comfort = line[3]
         self.price = Room.room_type[self.type] * Room.degree_of_comfort[self.comfort]
-        self._occupied = None
-
-    occupied = property()
-
-    @occupied.getter
-    def occupied(self):
-        if self._occupied is not None:
-            return self._occupied
-        else:
-            return False
-
-    @occupied.setter
-    def occupied(self, value):
-        self._occupied = value
+        self.occupied = None
 
     def __str__(self):
         return self.id  # вместо id можно ставить, что нужно
@@ -72,8 +59,8 @@ with open('fund.txt', 'r', encoding='utf-8') as fund:
 filtered = []
 for guest in clients:
     for room1 in rooms:
-        room1._occupied = guest.arrival
-        print(room1._occupied)
+        room1.occupied = guest.arrival
+        print(room1.occupied)
         break
         if room1.number_of_persons == guest.num_per:
             filtered.append(room1)
