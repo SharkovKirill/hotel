@@ -63,6 +63,11 @@ for guest in clients:
     for room_ in rooms:
         if room_.number_of_persons == guest.num_per:
             filtered.append(room_)
+prices = []
+for max_pay in clients:
+    for price_ in rooms:
+        if price_.price <= max_pay.max_price:
+            prices.append(price_)
 
 
 
