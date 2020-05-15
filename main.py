@@ -92,6 +92,22 @@ for guest in clients:
                 if p_room.price <= guest.max_price:
                     filtered.append(p_room)
 
+    if len(filtered) == 0:
+        for p_room in rooms:
+            if not p_room.occupied or p_room.occupied <= guest.arrival:
+                if p_room.number_of_persons <= guest.num_per:
+                    if p_room.price * 0.7 <= guest.max_price:
+                        filtered.append(p_room)
+
+        filtered.sort(reverse=True)
+        for rm in filtered:
+            if guest.max_price - rm.price * 0.7 >= 1000:
+                rm.price += 1000
+                rm.food = 'полупансион'
+            elif guest.max_price - rm.price * 0.7 >= 280:
+                rm.price += 280
+                rm.food = 'завтрак'
+
     filtered.sort(reverse=True)
     for rm in filtered:
         if guest.max_price - rm.price >= 1000:
@@ -119,45 +135,11 @@ for guest in clients:
             f_data[guest.surname + guest.name + guest.patr] = 'отказ'
             continue
     else:
-        if len(filtered) == 0:
-            for p_room in rooms:
-                if not p_room.occupied or p_room.occupied <= guest.arrival:
-                    if p_room.number_of_persons <= guest.num_per:
-                        if p_room.price * 0.7 <= guest.max_price:
-                            filtered.append(p_room)
+        f_data[guest.surname + guest.name + guest.patr] = 'отказ'
+        continue
 
-        filtered.sort(reverse=True)
-        for rm in filtered:
-            if guest.max_price - rm.price * 0.7 >= 1000:
-                rm.price += 1000
-                rm.food = 'полупансион'
-            elif guest.max_price - rm.price * 0.7 >= 280:
-                rm.price += 280
-                rm.food = 'завтрак'
-
-        if len(filtered) != 0:
-            filtered.sort(reverse=True)
-            if random.random() >= 0.25:
-                rm_id = filtered[0].id
-                rm_food = filtered[0].food
-
-                for s_rm in rooms:
-                    if s_rm.id == rm_id:
-                        s_rm.occupied = guest.arrival + guest.num_days
-                        break
-
-                lst = [rm_id, rm_food]
-                f_data[guest.surname + guest.name + guest.patr] = lst
-
-            else:
-                f_data[guest.surname + guest.name + guest.patr] = 'отказ'
-                continue
-        else:
-            f_data[guest.surname + guest.name + guest.patr] = 'отказ'
-            continue
-
-print(f_data)
-
+for key in list(f_data.keys()):
+    print(key + ': ', f_data[key])
 
 '''
 Kirill - vvod
