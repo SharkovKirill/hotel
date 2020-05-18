@@ -151,7 +151,7 @@ for guest in clients:
                 if s_rm.id == rm_id:
                     s_rm.occupied = guest.arrival + guest.num_days
                     break
-            
+
             lst = [rm_id, rm_food]
             print('-' * 100)
             print('Поступила заявка на бронирование: ')
