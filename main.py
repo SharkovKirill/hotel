@@ -40,6 +40,7 @@ class Room:
 
     degree_of_comfort = {'стандарт': 1, 'стандарт_улучшенный': 1.2, 'апартамент': 1.5}
     room_type = {'одноместный': 2900, 'двухместный': 2300, 'полулюкс': 3200, 'люкс': 4100}
+    food = {'без питания': 0 , 'завтрак': 280, 'полупансион': 1000}
 
     def __init__(self, line):
         '''Initialization method'''
@@ -118,6 +119,7 @@ for guest in clients:
                     if p_room.price * 0.7 <= guest.max_price:
                         filtered.append(p_room)
 
+
         #Add food price to the final cost (for dicount)
         filtered.sort(reverse=True)
         for rm in filtered:
@@ -149,19 +151,49 @@ for guest in clients:
                 if s_rm.id == rm_id:
                     s_rm.occupied = guest.arrival + guest.num_days
                     break
-
+            
             lst = [rm_id, rm_food]
+            print('-' * 100)
+            print('Поступила заявка на бронирование: ')
+            print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+                  f'{guest.num_days} {guest.max_price}')
+            print('Найден: ')
+            print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
+                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', rm.room_type[rm.type])
+
+            print('Клиент согласен. Номер забронирован.')
+
+
+
             f_data[guest.surname + guest.name + guest.patr] = lst
 
         else:
             f_data[guest.surname + guest.name + guest.patr] = 'отказ'
+            print('-' * 100)
+            print('Поступила заявка на бронирование: ')
+            print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+                  f'{guest.num_days} {guest.max_price}')
+            print('Найден: ')
+            print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
+                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость',  rm.room_type[rm.type])
+            print('Предложений по данному запросу нет. В бронировании отказано.')
             continue
     else:
         f_data[guest.surname + guest.name + guest.patr] = 'отказ'
+        print('-' * 100)
+        print('Поступила заявка на бронирование: ')
+        print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+              f'{guest.num_days} {guest.max_price}')
+        print('Найден: ')
+        print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
+              'фактически', guest.num_per, 'чел.', rm_food, 'стоимость',  rm.room_type[rm.type])
+        print('Клиент отказался от варианта.')
         continue
 
-for key in list(f_data.keys()):
-    print(key + ': ', f_data[key])
+print('=' * 100)
+
+
+
 
 '''
 Kirill - vvod
