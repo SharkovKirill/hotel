@@ -40,7 +40,6 @@ class Room:
 
     degree_of_comfort = {'стандарт': 1, 'стандарт_улучшенный': 1.2, 'апартамент': 1.5}
     room_type = {'одноместный': 2900, 'двухместный': 2300, 'полулюкс': 3200, 'люкс': 4100}
-    food = {'без питания': 0 , 'завтрак': 280, 'полупансион': 1000}
 
     def __init__(self, line):
         '''Initialization method'''
@@ -141,6 +140,7 @@ for guest in clients:
             rm.food = 'завтрак'
 
     #The opportunity to cancel the room
+    profit = 0
     if len(filtered) != 0:
         filtered.sort(reverse=True)
         if random.random() >= 0.25:
@@ -151,7 +151,7 @@ for guest in clients:
                 if s_rm.id == rm_id:
                     s_rm.occupied = guest.arrival + guest.num_days
                     break
-
+            total_cost = rm.room_type[rm.type] + food_cost[rm_food]
             lst = [rm_id, rm_food]
             print('-' * 100)
             print('Поступила заявка на бронирование: ')
@@ -159,7 +159,8 @@ for guest in clients:
                   f'{guest.num_days} {guest.max_price}')
             print('Найден: ')
             print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', rm.room_type[rm.type])
+                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
+            
 
             print('Клиент согласен. Номер забронирован.')
 
@@ -175,7 +176,7 @@ for guest in clients:
                   f'{guest.num_days} {guest.max_price}')
             print('Найден: ')
             print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость',  rm.room_type[rm.type])
+                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
             print('Предложений по данному запросу нет. В бронировании отказано.')
             continue
     else:
@@ -186,11 +187,13 @@ for guest in clients:
               f'{guest.num_days} {guest.max_price}')
         print('Найден: ')
         print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-              'фактически', guest.num_per, 'чел.', rm_food, 'стоимость',  rm.room_type[rm.type])
+              'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
         print('Клиент отказался от варианта.')
         continue
 
 print('=' * 100)
+print(profit)
+
 
 
 
