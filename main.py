@@ -12,6 +12,7 @@ class Client:
         self.surname = line[1]
         self.name = line[2]
         self.patr = line[3]
+        self.fullname = line[1] +' '+ line[2]+' ' + line[3]
         self.num_per = line[4]
         self.num_days = datetime.timedelta(days=int(line[6]))
         self.max_price = int(line[7])
@@ -153,43 +154,56 @@ for guest in clients:
                     break
             total_cost = rm.room_type[rm.type] + food_cost[rm_food]
             lst = [rm_id, rm_food]
-            f_data[guest.surname + guest.name + guest.patr] = lst
-            print('-' * 100)
-            print('Поступила заявка на бронирование: ')
-            print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
-                  f'{guest.num_days} {guest.max_price}')
-            print('Найден: ')
-            print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-            print('Клиент согласен. Номер забронирован.')
-
-
+            f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = lst
 
         else:
-            f_data[guest.surname + guest.name + guest.patr] = 'отказ'
-            print('-' * 100)
-            print('Поступила заявка на бронирование: ')
-            print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
-                  f'{guest.num_days} {guest.max_price}')
-            print('Найден: ')
-            print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-                  'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-            print('Клиент отказался от варианта.')
+            f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = 'отказ'
             continue
 
 
     else:
-        f_data[guest.surname + guest.name + guest.patr] = 'отказ'
-        print('-' * 100)
-        print('Поступила заявка на бронирование: ')
-        print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
-              f'{guest.num_days} {guest.max_price}')
-        #print('Найден: ')
-        #print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-        #      'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-        print('Предложений по данному запросу нет. В бронировании отказано.')
+        f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = 'не найдено'
         continue
+print('konec')
+for key in list(f_data.keys()):
 
+    if f_data[key][0]!= 'о' and f_data[key][0]!= 'н':
+        for guest in clients:
+            for room in rooms:
+                if guest.fullname == key and room.id == f_data[key][0]:
+                    print('-' * 100)
+                    print(key + ': ', f_data[key], f_data[key][0])#для примера
+                    print('Поступила заявка на бронирование: ')
+                    print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+                          f'{guest.num_days} {guest.max_price}')
+                    print('Найден: ')
+                    print('номер', room.id, room.type, room.comfort, 'рассчитан на', room.number_of_persons, 'чел.',
+                          'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
+                    print('Клиент согласен. Номер забронирован.')
+    elif f_data[key][0]== 'н':
+        for guest in clients:
+            if guest.fullname == key:
+                print('-' * 100)
+                print(key + ': ', f_data[key], f_data[key][0])#для примера
+                print('Поступила заявка на бронирование: ')
+                print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+                      f'{guest.num_days} {guest.max_price}')
+                print('Предложений по данному запросу нет. В бронировании отказано.')
+    elif f_data[key][1]=='о':
+        for guest in clients:
+            for room in rooms:
+                if guest.fullname == key and room.id == f_data[key][0]:
+                    print('-' * 100)
+                    print(key + ': ', f_data[key], f_data[key][0])#для примера
+                    print('Поступила заявка на бронирование: ')
+                    print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
+                          f'{guest.num_days} {guest.max_price}')
+                    print('Найден: ')
+                    print('номер', room.id, room.type, room.comfort, 'рассчитан на', room.number_of_persons, 'чел.',
+                          'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
+                    print('Клиент отказался от варианта.')
 print('=' * 100)
-print(profit)
+
+
+#print(profit)
 
