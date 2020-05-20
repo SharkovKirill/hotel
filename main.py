@@ -1,3 +1,9 @@
+'''
+Developers: Sharkov Kirill -  25%
+            Nikita Drachev - 25%
+            Vladimir Ermolenko - 25%
+            Svetlana Keda - 25%
+'''
 import datetime
 import random
 
@@ -175,7 +181,7 @@ for guest in clients:
     else:
         f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = 'не найдено'
         continue
-print('konec')
+
 for key in list(f_data.keys()):
     if f_data[key][0]!= 'о' and f_data[key][0]!= 'н':
         for guest in clients:
