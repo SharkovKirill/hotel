@@ -18,14 +18,14 @@ class Client:
         self.surname = line[1]
         self.name = line[2]
         self.patr = line[3]
-        self.fullname = line[1] +' '+ line[2]+' ' + line[3]
+        self.fullname = line[1] + ' ' + line[2] + ' ' + line[3]
         self.num_per = line[4]
         self.num_days = datetime.timedelta(days=int(line[6]))
         self.max_price = int(line[7])
         self.ar = line[5]
         self.num_d = line[6]
 
-        #Str into datetime
+        # Str into datetime
         arrival = line[5].split('.')[::-1]
         for dt in range(len(arrival)):
             arrival[dt] = int(arrival[dt])
@@ -92,34 +92,33 @@ class Room:
 
 food_cost = {'без питания': 0, 'завтрак': 280, 'полупансион': 1000}
 
-#Open file with guests and send them to the list
+# Open file with guests and send them to the list
 clients = []
 with open('booking.txt', 'r', encoding='utf-8') as booking:
     for line_p in booking.readlines():
         client = line_p.split()
         clients.append(Client(client))
 
-#Open file with rooms and send them to the list
+# Open file with rooms and send them to the list
 rooms = []
 with open('fund.txt', 'r', encoding='utf-8') as fund:
     for line_n in fund.readlines():
         room = line_n.split()
         rooms.append(Room(room))
 
-
 f_data = dict()
 
-#Full scan
+# Full scan
 for guest in clients:
     filtered = []
-    #Taking rooms
+    # Taking rooms
     for p_room in rooms:
         if not p_room.occupied or p_room.occupied <= guest.arrival:
             if p_room.number_of_persons == guest.num_per:
                 if p_room.price <= guest.max_price:
                     filtered.append(p_room)
 
-    #Taking rooms with discount 30%
+    # Taking rooms with discount 30%
     if len(filtered) == 0:
         for p_room in rooms:
             if not p_room.occupied or p_room.occupied <= guest.arrival:
@@ -127,8 +126,7 @@ for guest in clients:
                     if p_room.price * 0.7 <= guest.max_price:
                         filtered.append(p_room)
 
-
-        #Add food price to the final cost (for dicount)
+        # Add food price to the final cost (for dicount)
         filtered.sort(reverse=True)
         for rm in filtered:
             if guest.max_price - rm.price * 0.7 >= 1000:
@@ -148,7 +146,7 @@ for guest in clients:
             rm.price += 280
             rm.food = 'завтрак'
 
-    #The opportunity to cancel the room
+    # The opportunity to cancel the room
     profit = 0
     if len(filtered) != 0:
         filtered.sort(reverse=True)
@@ -162,7 +160,7 @@ for guest in clients:
                     break
             total_cost = rm.room_type[rm.type] + food_cost[rm_food]
             lst = [rm_id, rm_food, total_cost]
-            f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = lst
+            f_data[guest.surname + ' ' + guest.name + ' ' + guest.patr] = lst
 
         else:
             rm_id = filtered[0].id
@@ -173,17 +171,17 @@ for guest in clients:
                     s_rm.occupied = guest.arrival + guest.num_days
                     break
             total_cost = rm.room_type[rm.type] + food_cost[rm_food]
-            lst = ['о',rm_id, rm_food, total_cost]
-            f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = lst #отказ
+            lst = ['о', rm_id, rm_food, total_cost]
+            f_data[guest.surname + ' ' + guest.name + ' ' + guest.patr] = lst  # отказ
             continue
 
 
     else:
-        f_data[guest.surname +' '+ guest.name +' '+ guest.patr] = 'не найдено'
+        f_data[guest.surname + ' ' + guest.name + ' ' + guest.patr] = 'не найдено'
         continue
 
 for key in list(f_data.keys()):
-    if f_data[key][0]!= 'о' and f_data[key][0]!= 'н':
+    if f_data[key][0] != 'о' and f_data[key][0] != 'н':
         for guest in clients:
             for room in rooms:
                 if guest.fullname == key and room.id == f_data[key][0]:
@@ -202,10 +200,10 @@ for key in list(f_data.keys()):
                 print('-' * 100)
                 print('Поступила заявка на бронирование: ')
                 print(f'{guest.book_date} {guest.fullname} {guest.num_per} {guest.ar} {guest.num_d} '
-                          f'{guest.max_price}')
+                      f'{guest.max_price}')
                 print('Предложений по данному запросу нет. В бронировании отказано.')
 
-    elif f_data[key][0] =='о':
+    elif f_data[key][0] == 'о':
         for guest in clients:
             for room in rooms:
                 if guest.fullname == key and room.id == f_data[key][1]:
@@ -219,7 +217,3 @@ for key in list(f_data.keys()):
                     print('Клиент отказался от варианта.')
 
 print('=' * 100)
-
-
-#print(profit)
-
