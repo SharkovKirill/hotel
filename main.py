@@ -27,7 +27,7 @@ class Client:
     def __str__(self):
         '''String representation method'''
 
-        return self.name  # вместо name можно ставить, что нужно
+        return self.name
 
     def __repr__(self):
         '''Representation method'''
@@ -55,7 +55,7 @@ class Room:
     def __str__(self):
         '''String representation method'''
 
-        return self.id  # вместо id можно ставить, что нужно
+        return self.id
 
     def __repr__(self):
         '''Representation method'''
@@ -153,6 +153,7 @@ for guest in clients:
                     break
             total_cost = rm.room_type[rm.type] + food_cost[rm_food]
             lst = [rm_id, rm_food]
+            f_data[guest.surname + guest.name + guest.patr] = lst
             print('-' * 100)
             print('Поступила заявка на бронирование: ')
             print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
@@ -160,13 +161,9 @@ for guest in clients:
             print('Найден: ')
             print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
                   'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-            
-
             print('Клиент согласен. Номер забронирован.')
 
 
-
-            f_data[guest.surname + guest.name + guest.patr] = lst
 
         else:
             f_data[guest.surname + guest.name + guest.patr] = 'отказ'
@@ -177,29 +174,22 @@ for guest in clients:
             print('Найден: ')
             print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
                   'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-            print('Предложений по данному запросу нет. В бронировании отказано.')
+            print('Клиент отказался от варианта.')
             continue
+
+
     else:
         f_data[guest.surname + guest.name + guest.patr] = 'отказ'
         print('-' * 100)
         print('Поступила заявка на бронирование: ')
         print(f'{guest.book_date}  {guest.surname} {guest.name} {guest.patr} {guest.num_per}  {guest.arrival}'
               f'{guest.num_days} {guest.max_price}')
-        print('Найден: ')
-        print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
-              'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
-        print('Клиент отказался от варианта.')
+        #print('Найден: ')
+        #print('номер', rm.id, rm.type, rm.comfort, 'рассчитан на', rm.number_of_persons, 'чел.',
+        #      'фактически', guest.num_per, 'чел.', rm_food, 'стоимость', total_cost)
+        print('Предложений по данному запросу нет. В бронировании отказано.')
         continue
 
 print('=' * 100)
 print(profit)
 
-
-
-
-
-'''
-Kirill - vvod
-Vova, Nikita - proverka
-Sveta - print, PEP8
-'''
